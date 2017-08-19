@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Illuminate\Foundation\Bootstrap;
 
 use Illuminate\Contracts\Foundation\Application;

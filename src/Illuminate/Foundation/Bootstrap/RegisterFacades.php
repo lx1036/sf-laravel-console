@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Illuminate\Foundation\Bootstrap;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Facade;
-use Illuminate\Contracts\Foundation\Application;
 
 class RegisterFacades
 {

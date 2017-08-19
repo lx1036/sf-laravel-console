@@ -14,7 +14,7 @@ $app->singleton(
         \App\Illuminate\Foundation\Console\Kernel::class
 ); // bind class to interface
 
-/** @var  $kernel \App\Illuminate\Foundation\Console\Kernel */
+/** @var $kernel \App\Illuminate\Foundation\Console\Kernel */
 $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class); // dependency injection
 
 $status = $kernel->handle(

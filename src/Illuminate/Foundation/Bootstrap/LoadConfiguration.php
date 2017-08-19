@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Illuminate\Foundation\Bootstrap;
 
 use Exception;
-use SplFileInfo;
 use Illuminate\Config\Repository;
-use Symfony\Component\Finder\Finder;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
+use Illuminate\Contracts\Foundation\Application;
+use SplFileInfo;
+use Symfony\Component\Finder\Finder;
 
 class LoadConfiguration
 {
@@ -35,7 +37,7 @@ class LoadConfiguration
         // options available to the developer for use in various parts of this app.
         $app->instance('config', $config = new Repository($items));
 
-        if (! isset($loadedFromCache)) {
+        if (!isset($loadedFromCache)) {
             $this->loadConfigurationFiles($app, $config);
         }
 
@@ -56,14 +58,14 @@ class LoadConfiguration
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Contracts\Config\Repository  $repository
-     * @return void
      * @throws \Exception
+     * @return void
      */
     protected function loadConfigurationFiles(Application $app, RepositoryContract $repository)
     {
         $files = $this->getConfigurationFiles($app);
 
-        if (! isset($files['app'])) {
+        if (!isset($files['app'])) {
             throw new Exception('Unable to load the "app" configuration file.');
         }
 
@@ -87,7 +89,7 @@ class LoadConfiguration
         foreach (Finder::create()->files()->name('*.php')->in($configPath) as $file) {
             $directory = $this->getNestedDirectory($file, $configPath);
 
-            $files[$directory.basename($file->getRealPath(), '.php')] = $file->getRealPath();
+            $files[$directory . basename($file->getRealPath(), '.php')] = $file->getRealPath();
         }
 
         return $files;
@@ -105,7 +107,7 @@ class LoadConfiguration
         $directory = $file->getPath();
 
         if ($nested = trim(str_replace($configPath, '', $directory), DIRECTORY_SEPARATOR)) {
-            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested).'.';
+            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested) . '.';
         }
 
         return $nested;

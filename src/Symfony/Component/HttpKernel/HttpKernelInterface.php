@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /*
  * This file is part of the Symfony package.
  *
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 interface HttpKernelInterface
 {
     const MASTER_REQUEST = 1;
-    const SUB_REQUEST = 2;
+    const SUB_REQUEST    = 2;
 
     /**
      * Handles a Request to convert it to a Response.
@@ -35,9 +36,8 @@ interface HttpKernelInterface
      *                         (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
      * @param bool    $catch   Whether to catch exceptions or not
      *
-     * @return Response A Response instance
-     *
      * @throws \Exception When an Exception occurs during processing
+     * @return Response A Response instance
      */
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true);
 }

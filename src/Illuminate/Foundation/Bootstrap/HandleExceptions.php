@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Illuminate\Foundation\Bootstrap;
 
-use Exception;
 use ErrorException;
+use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -37,7 +39,7 @@ class HandleExceptions
 
         register_shutdown_function([$this, 'handleShutdown']);
 
-        if (! $app->environment('testing')) {
+        if (!$app->environment('testing')) {
             ini_set('display_errors', 'Off');
         }
     }
@@ -50,9 +52,8 @@ class HandleExceptions
      * @param  string  $file
      * @param  int  $line
      * @param  array  $context
-     * @return void
-     *
      * @throws \ErrorException
+     * @return void
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
@@ -73,7 +74,7 @@ class HandleExceptions
      */
     public function handleException($e)
     {
-        if (! $e instanceof Exception) {
+        if (!$e instanceof Exception) {
             $e = new FatalThrowableError($e);
         }
 
@@ -91,6 +92,18 @@ class HandleExceptions
     }
 
     /**
+     * Handle the PHP shutdown event.
+     *
+     * @return void
+     */
+    public function handleShutdown()
+    {
+        if (null !== ($error = error_get_last()) && $this->isFatal($error['type'])) {
+            $this->handleException($this->fatalExceptionFromError($error, 0));
+        }
+    }
+
+    /**
      * Render an exception to the console.
      *
      * @param  \Exception  $e
@@ -98,7 +111,7 @@ class HandleExceptions
      */
     protected function renderForConsole(Exception $e)
     {
-        $this->getExceptionHandler()->renderForConsole(new ConsoleOutput, $e);
+        $this->getExceptionHandler()->renderForConsole(new ConsoleOutput(), $e);
     }
 
     /**
@@ -110,18 +123,6 @@ class HandleExceptions
     protected function renderHttpResponse(Exception $e)
     {
         $this->getExceptionHandler()->render($this->app['request'], $e)->send();
-    }
-
-    /**
-     * Handle the PHP shutdown event.
-     *
-     * @return void
-     */
-    public function handleShutdown()
-    {
-        if (! is_null($error = error_get_last()) && $this->isFatal($error['type'])) {
-            $this->handleException($this->fatalExceptionFromError($error, 0));
-        }
     }
 
     /**
@@ -146,7 +147,7 @@ class HandleExceptions
      */
     protected function isFatal($type)
     {
-        return in_array($type, [E_COMPILE_ERROR, E_CORE_ERROR, E_ERROR, E_PARSE]);
+        return in_array($type, [E_COMPILE_ERROR, E_CORE_ERROR, E_ERROR, E_PARSE], true);
     }
 
     /**

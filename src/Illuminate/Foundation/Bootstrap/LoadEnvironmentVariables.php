@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Illuminate\Foundation\Bootstrap;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
-use Symfony\Component\Console\Input\ArgvInput;
 use Illuminate\Contracts\Foundation\Application;
+use Symfony\Component\Console\Input\ArgvInput;
 
 class LoadEnvironmentVariables
 {
@@ -38,18 +40,18 @@ class LoadEnvironmentVariables
      */
     protected function checkForSpecificEnvironmentFile($app)
     {
-        if (php_sapi_name() == 'cli' && with($input = new ArgvInput)->hasParameterOption('--env')) {
+        if (PHP_SAPI === 'cli' && with($input = new ArgvInput())->hasParameterOption('--env')) {
             $this->setEnvironmentFilePath(
-                $app, $app->environmentFile().'.'.$input->getParameterOption('--env')
+                $app, $app->environmentFile() . '.' . $input->getParameterOption('--env')
             );
         }
 
-        if (! env('APP_ENV')) {
+        if (!env('APP_ENV')) {
             return;
         }
 
         $this->setEnvironmentFilePath(
-            $app, $app->environmentFile().'.'.env('APP_ENV')
+            $app, $app->environmentFile() . '.' . env('APP_ENV')
         );
     }
 
@@ -62,7 +64,7 @@ class LoadEnvironmentVariables
      */
     protected function setEnvironmentFilePath($app, $file)
     {
-        if (file_exists($app->environmentPath().'/'.$file)) {
+        if (file_exists($app->environmentPath() . '/' . $file)) {
             $app->loadEnvironmentFrom($file);
         }
     }

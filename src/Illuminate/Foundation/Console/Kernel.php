@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Illuminate\Foundation\Console;
 
 use Closure;
 use Exception;
-use Throwable;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Console\Application as Artisan;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Throwable;
 
 class Kernel implements KernelContract
 {
@@ -75,30 +77,16 @@ class Kernel implements KernelContract
      */
     public function __construct(Application $app, Dispatcher $events)
     {
-        if (! defined('ARTISAN_BINARY')) {
+        if (!defined('ARTISAN_BINARY')) {
             define('ARTISAN_BINARY', 'artisan');
         }
 
-        $this->app = $app;
+        $this->app    = $app;
         $this->events = $events;
 
         $this->app->booted(function () {
             $this->defineConsoleSchedule();
         });
-    }
-
-    /**
-     * Define the application's command schedule.
-     *
-     * @return void
-     */
-    protected function defineConsoleSchedule()
-    {
-        $this->app->instance(
-            Schedule::class, $schedule = new Schedule($this->app[Cache::class])
-        );
-
-        $this->schedule($schedule);
     }
 
     /**
@@ -113,7 +101,7 @@ class Kernel implements KernelContract
         try {
             $this->bootstrap();
 
-            if (! $this->commandsLoaded) {
+            if (!$this->commandsLoaded) {
                 $this->commands();
 
                 $this->commandsLoaded = true;
@@ -147,27 +135,6 @@ class Kernel implements KernelContract
     public function terminate($input, $status)
     {
         $this->app->terminate();
-    }
-
-    /**
-     * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
-     */
-    protected function schedule(Schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Register the Closure based commands for the application.
-     *
-     * @return void
-     */
-    protected function commands()
-    {
-        //
     }
 
     /**
@@ -211,7 +178,7 @@ class Kernel implements KernelContract
     {
         $this->bootstrap();
 
-        if (! $this->commandsLoaded) {
+        if (!$this->commandsLoaded) {
             $this->commands();
 
             $this->commandsLoaded = true;
@@ -263,7 +230,7 @@ class Kernel implements KernelContract
      */
     public function bootstrap()
     {
-        if (! $this->app->hasBeenBootstrapped()) {
+        if (!$this->app->hasBeenBootstrapped()) {
             $this->app->bootstrapWith($this->bootstrappers());
         }
 
@@ -271,21 +238,6 @@ class Kernel implements KernelContract
         // all of the available deferred providers which will make all of the commands
         // available to an application. Otherwise the command will not be available.
         $this->app->loadDeferredProviders();
-    }
-
-    /**
-     * Get the Artisan application instance.
-     *
-     * @return \Illuminate\Console\Application
-     */
-    protected function getArtisan()
-    {
-        if (is_null($this->artisan)) {
-            return $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
-                                ->resolveCommands($this->commands);
-        }
-
-        return $this->artisan;
     }
 
     /**
@@ -297,6 +249,56 @@ class Kernel implements KernelContract
     public function setArtisan($artisan)
     {
         $this->artisan = $artisan;
+    }
+
+    /**
+     * Define the application's command schedule.
+     *
+     * @return void
+     */
+    protected function defineConsoleSchedule()
+    {
+        $this->app->instance(
+            Schedule::class, $schedule = new Schedule($this->app[Cache::class])
+        );
+
+        $this->schedule($schedule);
+    }
+
+    /**
+     * Define the application's command schedule.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */
+    protected function schedule(Schedule $schedule)
+    {
+        //
+    }
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        //
+    }
+
+    /**
+     * Get the Artisan application instance.
+     *
+     * @return \Illuminate\Console\Application
+     */
+    protected function getArtisan()
+    {
+        if (null === $this->artisan) {
+            return $this->artisan = (new Artisan($this->app, $this->events, $this->app->version()))
+                                ->resolveCommands($this->commands);
+        }
+
+        return $this->artisan;
     }
 
     /**
