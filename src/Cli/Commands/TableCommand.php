@@ -2,12 +2,12 @@
 
 namespace App\Cli\Commands;
 
-use Symfony\Component\Console\Command\Command;
+use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TableCommand extends Command
+final class TableCommand extends Command
 {
     protected function configure()
     {
@@ -24,7 +24,11 @@ class TableCommand extends Command
         $height = $input->getOption('height');
         $width  = $input->getOption('width');
         //        $options = $input->getOptions();
-        $output->setDecorated(true);
-        $output->writeln("Table $name whose height is $height and width is $width");
+        
+        if ($height && $width) {
+            $output->writeln("Table $name whose height is $height and width is $width");
+        } else {
+            $output->writeln("Table $name has no height or width");
+        }
     }
 }
