@@ -11,11 +11,16 @@ $app = new \App\Illuminate\Foundation\Application(__DIR__); // container
 
 $app->singleton(
         \Illuminate\Contracts\Console\Kernel::class,
-        \App\Illuminate\Foundation\Console\Kernel::class
+        \App\Cli\Commands\Kernel::class
 ); // bind class to interface
 
 /** @var $kernel \App\Illuminate\Foundation\Console\Kernel */
 $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class); // dependency injection
+
+// register \Illuminate\Console\Events\ArtisanStarting::class event listener
+$app['events']->listen(\Illuminate\Console\Events\ArtisanStarting::class, function (\Illuminate\Console\Events\ArtisanStarting $event) {
+    echo 'Application name is ' . $event->artisan->getName() . ', and the version is ' . $event->artisan->getVersion() . PHP_EOL;
+});
 
 $status = $kernel->handle(
         $input = new \Symfony\Component\Console\Input\ArgvInput(),
