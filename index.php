@@ -11,13 +11,13 @@ $app = new \App\Illuminate\Foundation\Application(__DIR__); // container
 
 // bind console kernel service, interface::class format
 $app->singleton(
-        \Illuminate\Contracts\Console\Kernel::class,
-        \App\Cli\Commands\Kernel::class
+\Illuminate\Contracts\Console\Kernel::class,
+\App\Cli\Commands\Kernel::class
 );
 
 // bind exceptions handler service, interface::class format
 $app->singleton(\Illuminate\Contracts\Debug\ExceptionHandler::class,
-    \App\Illuminate\Foundation\Exceptions\Handler::class
+\App\Illuminate\Foundation\Exceptions\Handler::class
 );
 
 /** @var $kernel \App\Illuminate\Foundation\Console\Kernel */
@@ -36,8 +36,8 @@ $app['events']->listen('cli:build_laravel', function (\App\Illuminate\Foundation
 });
 
 $status = $kernel->handle(
-        $input = new \Symfony\Component\Console\Input\ArgvInput(),
-        new \Symfony\Component\Console\Output\ConsoleOutput()
+    $input = new \Symfony\Component\Console\Input\ArgvInput(),
+    new \Symfony\Component\Console\Output\ConsoleOutput()
 );
 
 $kernel->terminate($input, $status);
