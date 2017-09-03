@@ -142,6 +142,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param  string|null  $basePath
      * @return void
+     *
+     *
+     * Needs and Get the minimum material for running the application system(CLI/CGI).
      */
     public function __construct($basePath = null)
     {

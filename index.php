@@ -30,6 +30,7 @@ $app['events']->listen(\Illuminate\Console\Events\ArtisanStarting::class, functi
 });
 
 // demo for 'cli:build_laravel' command dependency injection
+// $app->events->listen()
 $app['events']->listen('cli:build_laravel', function (\App\Illuminate\Foundation\Application $app) {
     $app->terminating(function () use ($app) {
         echo $app->version() . PHP_EOL;

@@ -24,7 +24,7 @@ final class TableCommand extends Command
         $height = $input->getOption('height');
         $width  = $input->getOption('width');
         //        $options = $input->getOptions();
-        
+
         if ($height && $width) {
             $output->writeln("Table $name whose height is $height and width is $width");
         } else {

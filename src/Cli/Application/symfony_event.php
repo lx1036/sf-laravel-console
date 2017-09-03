@@ -23,7 +23,7 @@ $dispatcher->addListener(\Symfony\Component\Console\ConsoleEvents::COMMAND, func
 $dispatcher->addListener(\Symfony\Component\Console\ConsoleEvents::ERROR, function (\Symfony\Component\Console\Event\ConsoleErrorEvent $event) {
     $exit_code = $event->getExitCode();
 
-    $event->setError(new \Symfony\Component\Console\Exception\LogicException('Caught exception', $exit_code));
+    $event->setError(new \Symfony\Component\Console\Exception\LogicException('Custom caught exception for test', $exit_code));
 });
 
 // add a 'console.terminate' event after running command

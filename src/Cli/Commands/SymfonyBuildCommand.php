@@ -18,13 +18,13 @@ final class SymfonyBuildCommand extends Command
             ->addOption('spouse', '-S', InputOption::VALUE_OPTIONAL, 'Input a spouse of the user, optional.')
             ->setDescription('This command build a household account');
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $account = $input->getArgument('account_number');
-        $user = $input->getOption('user');
-        $spouse = $input->getOption('spouse');
-        
-        $output->writeln("The account $account belongs to $user" . (empty($spouse) ? '.': " and $spouse."));
+        $user    = $input->getOption('user');
+        $spouse  = $input->getOption('spouse');
+
+        $output->writeln("The account $account belongs to $user" . (empty($spouse) ? '.' : " and $spouse."));
     }
 }

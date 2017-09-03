@@ -107,6 +107,7 @@ class Kernel implements KernelContract
                 $this->commandsLoaded = true;
             }
 
+            // get ConsoleApplication. input->ConsoleApplication->output
             return $this->getArtisan()->run($input, $output);
         } catch (Exception $e) {
             $this->reportException($e);

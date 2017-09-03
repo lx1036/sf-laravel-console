@@ -46,6 +46,7 @@ return PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->exclude('src/Cli/Commands')
+            ->exclude('src/Support')
             ->exclude('vendor')
             ->notPath('.phpstorm.meta.php')
             ->notPath('_ide_helper.php')
