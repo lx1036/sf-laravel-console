@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+// include()/include_once()/require()/require_once()
 include __DIR__ . '/vendor/autoload.php'; // composer
 
 /*spl_autoload_register(function () {
